@@ -1,0 +1,81 @@
+instalado:
+- node
+- express
+- express types
+- typescript
+- typescript node dev
+- react
+- knex
+- sqlite3
+- path
+
+---
+
+request -> recebe quais são os dados enviados do front-end, por exemplo dados do usuario da aplicação
+response -> resposta que devolve para o browser, como 404
+
+response.send("Hello World"); -> para envio de uma resposta padrão
+response.json -> para envio de uma resposta em formato JSON
+
+Rota -> Endereço completo da requisição
+Recurso -> Qual entidade estamos acessando do sistema, como o recurso de usuarios em /users
+
+---
+
+Request Param -> geralmente obrigatório, utilizado para executar alguma operação na Rota
+Query Param -> geralmente opcional, utilizado para filtrar, paginação, pesquisa
+Request Body -> Parâmetros para criação e atualização de informações
+
+---
+
+configura o express para aceitar json como corpo das requisições
+
+configura o sqlite, pois é um banco que não precisa ser instalado na máquina
+
+Knex agora como uma biblioteca para trabalhar com vários tipos de bancos de dados SQL
+com knex não precisa utilizar SELECt, apenas javascript 
+
+biblioteca path para padronizar em todos sistemas operacionais, evitando erros para localizar arquivos
+
+----
+
+identificando as entidades da aplicação
+
+points -> pontos de coleta
+	image
+	name
+	email
+	whatsapp
+	latitude
+	longitude
+	city
+	uf
+
+itens -> items para coleta
+	title
+	image
+
+point_items
+	point_id
+	item_id
+
+muitos para muitos -> n-n de itens para pontos de coleta e vice-versa
+
+----
+
+Funcionalidades da aplicação
+	Cadastro de ponto de coleta
+	Listar os itens de coleta
+	Listar pontos (filtro por estado/cidade/items)
+	Listar um ponto de coleta
+
+
+---
+
+knex migrations
+knex função up cria a tabela
+knex função down volta a tabela (deleta)
+
+knex seed para ja cadastrar previamente alguns items no banco
+
+pasta uploads para os svgs
