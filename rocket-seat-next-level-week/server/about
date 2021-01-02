@@ -79,3 +79,16 @@ knex função down volta a tabela (deleta)
 knex seed para ja cadastrar previamente alguns items no banco
 
 pasta uploads para os svgs
+
+----
+
+sempre que realizar uma query com o knix, use o async/await
+
+em classes nao da de usar arrow function no create
+
+padrões para criação de funções de um controller
+index -> uma listagem
+show -> so vai exibir um registro
+create ou store
+update
+delete ou destroy
