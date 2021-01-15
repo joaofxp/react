@@ -23,12 +23,12 @@ interface Params {
 interface Data {
     point: {
         image: string;
+        image_url: string;
         name: string;
         email: string;
         whatsapp: string;
         city: string;
         uf: string;
-        image_url: string;
     };
     items: { title: string }[];
 }
