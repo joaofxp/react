@@ -1,3 +1,44 @@
+WEB
+
+JSX: Sintaxe de XML dentro do JavaScript
+
+Componentes (a function que exporta default) sempre inicia com letra maiúscula
+
+React.FC = uma função que do tipo componente
+	para ela é necessário criar uma interface, no formato de um objeto, Ex:
+		interface HeaderProps { title: string, variavelOpcional?: boolean}
+
+React usa imutabilidade, nunca altera o valor de uma variavel direto, sempre cria um novo valor com as modificações desejadas
+	Para isso importamos o useState, para atualizar automaticamente, onde useState(0) retorna a variavel, e uma função, usa um array pra receber isso
+
+para fazer os links entre SPA's, usa o Link do react-router-dom	
+
+utilizar o leaflet para os mapas
+
+----
+
+Limpando a estrutura da aplicação
+
+Aprendendo Conceitos -> JSX, Componente, Propriedade, Estado e imutabilidade
+
+Arquivos
+
+Construção do HTML
+Configuraçãõ da Navegação,
+Construção do HTML do fomrulário
+Integrando mapa no fomrulário
+Buscando itens de coleta da aplicação
+Buscando estados e cidades do IBGE
+Opção pro usuário selecionar uma localidade no mapa
+Carregar a localização atual do usuário no mapa
+Cadastro do ponto de coleta na aplicação
+
+Mensagem de Sucesso (faltou fazer, ficou só no alert)
+
+---------------------------------
+
+SERVER
+
 instalado:
 - node
 - express
@@ -97,3 +138,9 @@ delete ou destroy
 ----
 
 unsplash -> site legal para imagens, na url das imagens é possível setar o tamanho e a qualidade
+
+
+
+--------------------------------
+
+MOBILE
