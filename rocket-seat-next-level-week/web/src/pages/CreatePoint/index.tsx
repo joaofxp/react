@@ -3,7 +3,7 @@ import logo from "../../assets/logo.svg";
 import { Link, useHistory } from "react-router-dom";
 import "./styles.css";
 import { FiArrowLeft } from "react-icons/fi";
-import { MapContainer, TileLayer, Marker } from "react-leaflet";
+import { MapContainer, Marker, TileLayer, useMapEvents } from "react-leaflet";
 import api from "../../services/api";
 import Dropzone from "../../components/DropZone";
 import axios from "axios";
@@ -30,14 +30,16 @@ const CreatePoint: React.FC = () => {
     const [cities, setCities] = useState<string[]>([]);
     const [selectedUf, setSelectedUf] = useState("0");
     const [selectedCity, setSelectedCity] = useState("0");
-    const [selectedPosition, setSelectedPosition] = useState<[number, number]>([
-        0,
-        0,
-    ]);
+
     const [initialPosition, setInitionPosition] = useState<[number, number]>([
         0,
         0,
     ]);
+    const [selectedPosition, setSelectedPosition] = useState<[number, number]>([
+        0,
+        0,
+    ]);
+
     const [formData, setFormData] = useState({
         name: "",
         email: "",
@@ -49,13 +51,14 @@ const CreatePoint: React.FC = () => {
     useEffect(() => {
         navigator.geolocation.getCurrentPosition((position) => {
             const { latitude, longitude } = position.coords;
+
             setInitionPosition([latitude, longitude]);
+            setSelectedPosition([latitude, longitude]);
         });
-    });
+    }, []);
 
     useEffect(() => {
         api.get("/items").then((response: any) => {
-            console.log(response.data);
             setItems(response.data);
         });
     }, []);
@@ -90,11 +93,6 @@ const CreatePoint: React.FC = () => {
 
     function handleSelectCity(event: ChangeEvent<HTMLSelectElement>) {
         setSelectedCity(event.target.value);
-    }
-
-    function handleMapClick() {
-        // const { lat: latidude, lng: longitude } = event.latlng;
-        // setSelectedPosition([latidude, longitude]);
     }
 
     function handleInputChange(event: ChangeEvent<HTMLInputElement>) {
@@ -140,6 +138,15 @@ const CreatePoint: React.FC = () => {
         await api.post("/points", data);
 
         history.push("/");
+    }
+
+    function LocationMarker() {
+        useMapEvents({
+            click: (e) => {
+                setSelectedPosition([e.latlng.lat, e.latlng.lng]);
+            },
+        });
+        return <Marker position={selectedPosition}></Marker>;
     }
 
     return (
@@ -202,15 +209,17 @@ const CreatePoint: React.FC = () => {
                         <h2>Endereço</h2>
                         <span>Selecione o endereço no mapa</span>
                     </legend>
-                    {/* 
-          <MapContainer center={initialPosition} zoom={15} onClick={handleMapClick}>
-            <TileLayer
-              attribution='&amp;copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-              url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-            />
 
-            <Marker position={selectedPosition} />
-          </MapContainer> */}
+                    {initialPosition[0] !== 0 && (
+                        <MapContainer center={initialPosition} zoom={13}>
+                            <TileLayer
+                                attribution='&amp;copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+                                url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                            />
+
+                            <LocationMarker />
+                        </MapContainer>
+                    )}
 
                     <div className="field-group">
                         <div className="field">
