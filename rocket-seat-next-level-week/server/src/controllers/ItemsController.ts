@@ -1,21 +1,41 @@
 import { Request, Response } from "express";
 import knex from "../database/connection";
 
+interface Item {
+    id: number;
+    title: string;
+    image: string;
+}
+
+const baseURL = "http://localhost:3333";
+// const baseURL = "http://192.168.100.2:3333";
+
 class ItemsController {
-    async index(request: Request, response: Response) {
-        const items = await knex("items").select("*");
+    index = async (request: Request, response: Response) => {
+        async function selectAllItems() {
+            const items: Item[] = await knex("items").select("*");
 
-        const serializedItems = items.map((item) => {
-            return {
-                id: item.id,
-                title: item.title,
-                image_url: `http://192.168.100.2:3333/uploads/${item.image}`,
-            };
-        });
+            return items;
+        }
 
-        // image_url: `http://localhost:3333/uploads/${item.image}`,
+        async function formatItems(itemsToFormat: Item[]) {
+            const itemsFormatted = itemsToFormat.map((item: Item) => {
+                return {
+                    id: item.id,
+                    title: item.title,
+                    image_url: `${baseURL}/uploads/${item.image}`,
+                };
+            });
+
+            return itemsFormatted;
+        }
+
+        const items: Item[] = await selectAllItems();
+
+        const serializedItems = await formatItems(items);
+
         return response.json(serializedItems);
-    }
+    };
 }
 
 export default ItemsController;
