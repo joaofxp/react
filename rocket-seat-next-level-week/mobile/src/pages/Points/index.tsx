@@ -30,7 +30,6 @@ interface Point {
     image_url: string;
     latitude: number;
     longitude: number;
-    image_url: string;
 }
 
 interface Params {

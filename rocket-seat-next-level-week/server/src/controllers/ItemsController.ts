@@ -7,8 +7,8 @@ interface Item {
     image: string;
 }
 
-const baseURL = "http://localhost:3333";
-// const baseURL = "http://192.168.100.2:3333";
+// const baseURL = "http://localhost:3333";
+const baseURL = "http://192.168.100.2:3333";
 
 class ItemsController {
     index = async (request: Request, response: Response) => {

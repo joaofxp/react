@@ -14,11 +14,11 @@ interface Point {
     uf: string;
 }
 
-const baseURL = "http://localhost:3333";
-// const baseURL = "http://192.168.100.2:3333";
+// const baseURL = "http://localhost:3333";
+const baseURL = "http://192.168.100.2:3333";
 
 class PointsController {
-    serializePoint = async (point: Point) => {
+    serializePoint = (point: Point) => {
         return {
             ...point,
             image_url: `${baseURL}/uploads/${point.image}`,
@@ -26,13 +26,15 @@ class PointsController {
     };
 
     serializePoints = async (points: Point[]) => {
-        const serialized = points.map((point: Point) =>
-            this.serializePoint(point)
-        );
-        return serialized;
+        const pointsSerialized = points.map((point: Point) => {
+            return this.serializePoint(point);
+        });
+
+        await Promise.all(pointsSerialized);
+        return pointsSerialized;
     };
 
-    async index(request: Request, response: Response) {
+    index = async (request: Request, response: Response) => {
         interface PointIndexQueryFilters {
             city: string;
             uf: string;
@@ -41,7 +43,7 @@ class PointsController {
         }
 
         async function parseItems(items: string) {
-            const itemsParsed = items
+            const itemsParsed = String(items)
                 .split(",")
                 .map((item) => Number(item.trim()));
 
@@ -51,7 +53,7 @@ class PointsController {
         async function selectPointsFiltered(
             indexQueryFilters: PointIndexQueryFilters
         ) {
-            const filtered = knex("points")
+            const filtered = await knex("points")
                 .join("point_items", "points.id", "=", "point_items.point_id")
                 .whereIn("point_items.item_id", indexQueryFilters.itemsParsed)
                 .where("city", String(indexQueryFilters.city))
@@ -70,11 +72,12 @@ class PointsController {
         const pointsFiltered = await selectPointsFiltered(indexQueryFilters);
 
         const serializedPoints = await this.serializePoints(pointsFiltered);
+        console.log(serializedPoints);
 
-        const indexResponse = response.json(serializedPoints);
+        // const indexResponse = response.json(serializedPoints);
 
-        return indexResponse;
-    }
+        return response.json(serializedPoints);
+    };
 
     show = async (request: Request, response: Response) => {
         async function getPointIdFromRequest({ params }: { params: any }) {
