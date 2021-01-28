@@ -69,7 +69,7 @@ const CreatePoint: React.FC = () => {
                 "https://servicodados.ibge.gov.br/api/v1/localidades/estados"
             )
             .then((response) => {
-                const ufInitials = response.data.map((uf) => uf.sigla);
+                const ufInitials = response.data.map((uf) => uf.sigla).sort();
                 setUfs(ufInitials);
             });
     }, []);
@@ -82,7 +82,7 @@ const CreatePoint: React.FC = () => {
                 `https://servicodados.ibge.gov.br/api/v1/localidades/estados/${selectedUf}/municipios`
             )
             .then((response) => {
-                const cityNames = response.data.map((city) => city.nome);
+                const cityNames = response.data.map((city) => city.nome).sort();
                 setCities(cityNames);
             });
     }, [selectedUf]);
